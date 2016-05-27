@@ -1,3 +1,26 @@
+def calculate(array)
+  stack = Stack.new
+  array.each do |item|
+    if (0..9).include?(item)
+      stack.push(item)
+    else
+      value_1 = stack.pop
+      value_2 = stack.pop
+      case item
+      when "+"
+        result = value_1 + value_2
+      when "-"
+        result = value_2 - value_1
+      when "x"
+        result = value_1 * value_2
+      end
+      stack.push(result)
+    end
+  end
+  stack.pop
+end
+
+
 class Stack
   attr_accessor :length
   def initialize
@@ -51,22 +74,20 @@ class LinkedList
   def insert_first(element)
     if (@linked_list == nil)
       @linked_list = Node.new(element)
-      @current_node = @linked_list
     else
       new_node = Node.new(element)
       new_node.insert_after(@linked_list)
       @linked_list = new_node
-      @current_node = @linked_list
     end
   end
 
   def remove_first
-    if (@linked_list.next_node != nil)
+    if (@linked_list != nil)
+      removed_node = @linked_list
       @linked_list = @linked_list.next_node
-      @current_node = @linked_list
+      removed_node
     else
       @linked_list = nil
-      @current_node = @linked_list
     end
   end
 
@@ -78,7 +99,6 @@ class LinkedList
       cursor = @linked_list
       (size-1).times { cursor = cursor.next_node }
       cursor.next_node = Node.new(element)
-      @current_node = @linked_list
     end
   end
 
@@ -87,10 +107,8 @@ class LinkedList
       cursor = @linked_list
       (size-2).times { cursor = cursor.next_node }
       cursor.next_node = nil
-      @current_node = @linked_list
     else
       @linked_list = nil
-      @current_node = @linked_list
     end
   end
 
